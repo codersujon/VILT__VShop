@@ -21,8 +21,11 @@
         <!-- Sidebar start -->
         <Sidebar />
         <!-- end -->
+        <main class="p-4 md:ml-64 h-auto pt-20">
+            
+            <!-- content change -->
+            <slot />
 
-       <slot />
-
+        </main>
     </div>
 </template>
