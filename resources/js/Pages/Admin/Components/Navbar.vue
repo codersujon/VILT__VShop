@@ -341,7 +341,7 @@
                                 Billing
                             </div>
                         </a>
-                        <a href="#"
+                        <Link :href="route('logout')" method="POST"
                             class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
                             <svg class="mx-auto mb-1 w-7 h-7 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -353,7 +353,7 @@
                             <div class="text-sm text-gray-900 dark:text-white">
                                 Logout
                             </div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
                 <button type="button"
@@ -429,7 +429,7 @@
                     </ul>
                     <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
                         <li>
-                            <Link :href="route('logout')" method="post"
+                            <Link :href="route('logout')" method="POST"
                                 class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                 Sign out
                             </Link>
@@ -442,5 +442,11 @@
 </template>
 
 <script setup>
-
+    import { Link } from '@inertiajs/vue3'
 </script>
+
+<style lang="css">
+    Link{
+        cursor: pointer;
+    }
+</style>
