@@ -34,7 +34,8 @@ class ProductController extends Controller
         $product->save();
 
         // if check product has images upload
-        if($request->hasFile('product_images')){
+        if($request->hasFile('product_images'))
+        {
             $productImages = $request->file('product_images');
             foreach($productImages as $image){
                 // Generate a unique name for the image using timestamp and random string
@@ -48,9 +49,6 @@ class ProductController extends Controller
                 ]);
             }
         }    
-
         return redirect()->route('admin.products.index')->with("success", "Product Created Successfully!");
-
-
     }
 }
