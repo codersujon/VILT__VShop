@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use App\Models\Product;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\ProductImage;
 
 class ProductController extends Controller
@@ -16,7 +18,13 @@ class ProductController extends Controller
      */
     public function index(){
         $products = Product::get();
-        return Inertia::render('Admin/Product/Index', ['products'=> $products]);
+        $brands = Brand::get();
+        $categories = Category::get();
+        return Inertia::render('Admin/Product/Index', [
+            'products'=> $products, 
+            'brands'=> $brands, 
+            'categories'=> $categories 
+        ]);
     }
 
     /**
