@@ -3,7 +3,10 @@
     import { usePage, router } from "@inertiajs/vue3"
     import { ref } from "vue";
 
-    const products = usePage().props.products;
+    defineProps({
+        products: Array
+    });
+
     const brands = usePage().props.brands;
     const categories = usePage().props.categories;
 
