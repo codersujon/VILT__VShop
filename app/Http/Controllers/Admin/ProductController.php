@@ -17,7 +17,7 @@ class ProductController extends Controller
      * Index
      */
     public function index(){
-        $products = Product::get();
+        $products = Product::with('category', 'brand')->get();
         $brands = Brand::get();
         $categories = Category::get();
         return Inertia::render('Admin/Product/Index', [
