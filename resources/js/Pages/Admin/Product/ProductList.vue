@@ -1,6 +1,7 @@
 <script setup>
 
     import { usePage, router } from "@inertiajs/vue3"
+    import { Plus } from '@element-plus/icons-vue'
     import { ref } from "vue";
 
     defineProps({
@@ -202,6 +203,41 @@
 
     }
 
+    //delete product
+    const deleteProduct = (product, index) =>{
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#009432",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No",
+        }).then((result)=>{
+                
+            if (result.isConfirmed) {
+                try {
+                    router.delete('products/destroy/' + product.id, {
+                        onSuccess: (page) => {
+                            Swal.fire({
+                                toast: true,
+                                position: "top-end",
+                                icon: "success",
+                                showConfirmButton: false,
+                                title: page.props.flash.success
+                            });
+
+                        }
+                    });
+                } catch (error) {
+                    console.log(error); 
+                }
+            }
+
+        });  
+    }
+
 </script>
 
 <template>
@@ -209,7 +245,7 @@
     <!-- section start-->
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <!-- dialog for adding product or edit -->
-        <el-dialog v-model="dialogVisible" :title=" editMode ? 'Edit Product': 'Add Product' " width="500" :before-close="handleClose">
+        <el-dialog v-model="dialogVisible" :title=" editMode ? 'Edit Product': 'Add Product' " width="500">
             <!-- form start -->
             <form class="max-w-md mx-auto" @submit.prevent="editMode ? updateProduct():AddProduct()">
                 <!-- title -->
@@ -482,16 +518,12 @@
                                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                             :aria-labelledby="`${product.id}-button`">
                                             <li>
-                                                <a href="#"
-                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
-                                            </li>
-                                            <li>
                                                 <button @click="openEditModal(product)"
                                                     class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</button>
                                             </li>
                                         </ul>
                                         <div class="py-1">
-                                            <a href="#"
+                                            <a href="#" @click="deleteProduct(product, index)"
                                                 class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
                                         </div>
                                     </div>
