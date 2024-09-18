@@ -68,7 +68,7 @@
         }
 
         try{
-            await router.post('products/store', formData, {
+            await router.post('/admin/products/store', formData, {
                 onSuccess: page => {
                     Swal.fire({
                         toast: true,
@@ -105,6 +105,34 @@
         dialogImageUrl.value = ""
     }
 
+    //delete single product image
+    const deleteImage = async (pimage, index) =>{
+       try{
+
+        await router.delete('/admin/products/image/' + pimage.id,{
+            onSuccess: (page) => {
+                product_images.value.splice(index, 1);
+                Swal.fire({
+                    toast: true,
+                    position: "top-end",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    },
+                    title: page.props.flash.success
+                });
+            }
+        })
+
+       }catch(error){
+            console.log(error);
+       }
+    }
+
     //open edit modal
     const openEditModal = (product) =>{
         editMode.value = true;
@@ -123,6 +151,54 @@
         product_images.value = product.product_images
     }
 
+    //update product
+    const updateProduct = async () =>{
+        const formData = new FormData();
+
+        formData.append('title', title.value);
+        formData.append('quantity', quantity.value);
+        formData.append('price', price.value);
+        formData.append('description', description.value);
+        formData.append('brand_id', brand_id.value);
+        formData.append('category_id', category_id.value);
+        formData.append('_method', 'PUT');
+
+         // Append product images to the FormData
+         for(const image of productImages.value){
+            formData.append('product_images[]', image.raw);
+        }
+
+        try{
+            await router.post('/admin/products/update/' + id.value, formData, {
+                onSuccess: page => {
+
+                    dialogVisible.value = false;
+                    resetFormData();
+
+                    Swal.fire({
+                        toast: true,
+                        position: "top-end",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        },
+                        title: page.props.flash.success
+                    });
+
+                    
+                }
+            });
+        }catch(error){
+            console.log(error);
+        }
+
+
+    }
+
 </script>
 
 <template>
@@ -132,7 +208,7 @@
         <!-- dialog for adding product or edit -->
         <el-dialog v-model="dialogVisible" :title=" editMode ? 'Edit Product': 'Add Product' " width="500" :before-close="handleClose">
             <!-- form start -->
-            <form class="max-w-md mx-auto" @submit.prevent="AddProduct()">
+            <form class="max-w-md mx-auto" @submit.prevent="editMode ? updateProduct():AddProduct()">
                 <!-- title -->
                 <div class="relative z-0 w-full mb-5 group">
                     <input type="text" name="floating_title" id="floating_title" v-model="title"
@@ -201,6 +277,18 @@
                         </el-icon>
                     </el-upload>
 
+                </div>
+                <!-- end -->
+
+                <!-- list of images for selected products -->
+                <div class="flex flex-nowrap mb-5">
+                    <div class="relative" v-for="pimage in product_images" :key="pimage.id">
+                        <img class="w-20 h-20 rounded mr-2" :src="`/${pimage.image}`" alt="">
+
+                        <span @click="deleteImage(pimage, index)" class="absolute top-0 left-8 transform -translate-y-1/2 w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full cursor-pointer">
+                            
+                        </span>
+                    </div>
                 </div>
                 <!-- end -->
 
