@@ -26,7 +26,7 @@ class ProductController extends Controller
             'categories'=> $categories 
         ]);
     }
-
+    
     /**
      * Store
      */
@@ -59,7 +59,6 @@ class ProductController extends Controller
         }    
         return redirect()->route('admin.products.index')->with("success", "Product Created Successfully!");
     }
-
 
     /**
      * Update Product
@@ -97,7 +96,6 @@ class ProductController extends Controller
 
     }
 
-
     /**
      * deleteImage
      */
@@ -111,11 +109,9 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with("success", "Image deleted Successfully!");
     }
 
-
     /**
      * Product Destrtoy
      */
-
      public function destroy($id){
         $product = Product::findOrFail($id)->delete();
         return redirect()->route('admin.products.index')->with("success", "Product deleted Successfully!");
